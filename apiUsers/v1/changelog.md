@@ -1,9 +1,6 @@
 # Changelog
 
-## [0.5.0-alpha] - 2023-05-21
-- usuarios
-- Validaciones
-- Perfiles
-- Suscripciones
-- Sesión
+## [0.5.2-alpha] - 2023-05-21
+- CORRECCION DE PARAMETRO EN METODO GET USERS
+- CORRECCION DE PARAMETRO EN METODO PUT USERS
 
