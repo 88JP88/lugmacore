@@ -309,6 +309,51 @@ Flight::route('GET /getGroupById/@id/@profile', function ($id,$profile) {
 
 });
 
+Flight::route('GET /getAdminGroupById/@id/@profile', function ($id,$profile) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.responsible_id='$profile' and g.status=1");
+       
+
+        $groups=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $group=[
+                    'id' => $row['group_id'],
+                    'name' => $row['name'],
+                    'profile' => $row['profile_id'],
+                    'status' => $row['is_active'],
+                    'qty' => $row['max_qty'],
+                    'public' => $row['public'],
+                    'auto_join' => $row['auto_join'],
+                    'responsible_id' => $row['responsible_id'],
+                    'responsible_id2' => $row['sub_responsible_id'],
+                    'public_add' => $row['public_add'],
+                    'members' => $row['members'],
+                    'maker' => $row['username'],
+                    'description' => $row['description']
+                ];
+                
+                array_push($groups,$group);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['groups'=>$groups]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
 Flight::route('GET /getResponsibleGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
@@ -910,6 +955,31 @@ Flight::route('POST /putMakerGroups', function () {
     
 });
 
+Flight::route('POST /putAdminGroups', function () {
+    $conectar=conn();
+    //$uri = $_SERVER['REQUEST_URI'];
+
+    $description=(Flight::request()->data->description);
+    
+    $qty=(Flight::request()->data->qty);
+    
+    $status=(Flight::request()->data->status);
+    
+    $public=(Flight::request()->data->public);
+    $auto_join=(Flight::request()->data->auto_join);
+    $auto_add=(Flight::request()->data->auto_add);
+    $group_id=(Flight::request()->data->group_id);
+    $user=(Flight::request()->data->profile_id);
+
+   
+                             $query= mysqli_query($conectar,"UPDATE groups_general SET description='$description',max_qty='$qty',is_active='$status',public='$public', auto_join='$auto_join',public_add='$auto_add' WHERE responsible_id='$user' and group_id='$group_id'");
+                            
+    
+    echo 'true';
+     
+   
+    
+});
 
 Flight::route('POST /putHideUsersGroups', function () {
     $conectar=conn();

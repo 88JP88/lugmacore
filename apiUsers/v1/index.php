@@ -272,11 +272,12 @@ Flight::route('POST /putUser', function () {
     $last_name=(Flight::request()->data->last_name);
     $contact=(Flight::request()->data->contact);
     $user_id=(Flight::request()->data->user_id);
+    $public=(Flight::request()->data->public);
 
    
 
    
-    $query= mysqli_query($conectar,"UPDATE users SET name='$name',last_name='$last_name',contact='$contact' WHERE user_id='$user_id'");
+    $query= mysqli_query($conectar,"UPDATE users SET name='$name',last_name='$last_name',contact='$contact',is_public='$public' WHERE user_id='$user_id'");
        
     
    
@@ -452,7 +453,7 @@ Flight::route('GET /get/@id', function ($id) {
     $uri = $_SERVER['REQUEST_URI'];
 
 
-    $query= mysqli_query($conectar,"SELECT u.user_id,u.username,u.name,u.last_name,u.contact,p.rol,p.profile_id,p.imageUrl,p.sub_days FROM users u JOIN profiles p ON p.user_id=u.user_id  where u.username='$id'");
+    $query= mysqli_query($conectar,"SELECT u.user_id,u.username,u.name,u.last_name,u.contact,p.rol,p.profile_id,p.imageUrl,p.sub_days,u.is_public,u.mail FROM users u JOIN profiles p ON p.user_id=u.user_id  where u.username='$id'");
        
 
         $users=[];
@@ -468,7 +469,9 @@ Flight::route('GET /get/@id', function ($id) {
                     'rol' => $row['rol'],
                     'profile' => $row['profile_id'],
                     'image' => $row['imageUrl'],
-                    'days' => $row['sub_days']
+                    'days' => $row['sub_days'],
+                    'public' => $row['is_public'],
+                    'internal_mail' => $row['mail']
                 ];
                 
                 array_push($users,$user);
