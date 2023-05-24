@@ -69,7 +69,7 @@ $dato_encriptado1 = $encriptar($word);
             if (strpos($user, " ") === false && strlen($user) < 13 && preg_match('/^[^@#%&,:ñÑ]+$/', $user)) {
                           
 
-                if (preg_match('/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$/', $pass) && strlen($user) > 7 && $pass==$pass1)  {
+                if (preg_match('/^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,}$/', $pass) && strlen($user) > 4 && $pass==$pass1)  {
                     $userm=$user."@lugma.com";
                     $query= mysqli_query($conectar,"INSERT INTO users (username,name,last_name,contact,keyword,user_id,mail) VALUES ('$user','$name','$last_name','$contact','$dato_encriptado','$primeros_ocho','$userm')");
                             
@@ -489,6 +489,90 @@ Flight::route('GET /get/@id', function ($id) {
 
 });
 
+Flight::route('GET /getMyProfileByProfile/@id', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT u.user_id,u.username,u.name,u.last_name,u.contact,p.rol,p.profile_id,p.imageUrl,p.sub_days,u.is_public,u.mail FROM users u JOIN profiles p ON p.user_id=u.user_id  where p.profile_id='$id'");
+       
+
+        $users=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+                $user=[
+                    'user_id' => $row['user_id'],
+                    'username' => $row['username'],
+                    'name' => $row['name'],
+                    'last_name' => $row['last_name'],
+                    'contact' => $row['contact'],
+                    'rol' => $row['rol'],
+                    'profile' => $row['profile_id'],
+                    'image' => $row['imageUrl'],
+                    'days' => $row['sub_days'],
+                    'public' => $row['is_public'],
+                    'internal_mail' => $row['mail']
+                ];
+                
+                array_push($users,$user);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['users'=>$users]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+
+Flight::route('GET /getByProfile/@id', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT u.user_id,u.username,u.name,u.last_name,u.contact,p.rol,p.profile_id,p.imageUrl,p.sub_days,u.is_public,u.mail FROM users u JOIN profiles p ON p.user_id=u.user_id  where p.profile_id='$id'");
+       
+
+        $users=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+                $user=[
+                    'user_id' => $row['user_id'],
+                    'username' => $row['username'],
+                    'name' => $row['name'],
+                    'last_name' => $row['last_name'],
+                    'contact' => $row['contact'],
+                    'rol' => $row['rol'],
+                    'profile' => $row['profile_id'],
+                    'image' => $row['imageUrl'],
+                    'days' => $row['sub_days'],
+                    'public' => $row['is_public'],
+                    'internal_mail' => $row['mail']
+                ];
+                
+                array_push($users,$user);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['users'=>$users]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
 
 Flight::route('GET /getPublicUsers/', function () {
     header("Access-Control-Allow-Origin: *");

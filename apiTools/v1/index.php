@@ -169,6 +169,125 @@ Flight::route('GET /getAlert/@id', function ($id) {
 
 });
 
+
+
+Flight::route('GET /getDis/@id', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT dis_id,group_id,profile_id,name,content,public_date FROM groups_discussions where group_id='$id' and status=1 and is_active=1 ORDER BY created_at DESC");
+       
+
+        $discs=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $disc=[
+                    'id' => $row['dis_id'],
+                    'group_id' => $row['group_id'],
+                    'maker' => $row['profile_id'],
+                    'name' => $row['name'],
+                    'content' => $row['content'],
+                    'public_date' => $row['public_date']
+                ];
+                
+                array_push($discs,$disc);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['discs'=>$discs]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+Flight::route('GET /getDisById/@id', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT dis_id,group_id,profile_id,name,content,public_date FROM groups_discussions where dis_id='$id' and status=1 and is_active=1 ORDER BY created_at DESC");
+       
+
+        $discs=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $disc=[
+                    'id' => $row['dis_id'],
+                    'group_id' => $row['group_id'],
+                    'maker' => $row['profile_id'],
+                    'name' => $row['name'],
+                    'content' => $row['content'],
+                    'public_date' => $row['public_date']
+                ];
+                
+                array_push($discs,$disc);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['discs'=>$discs]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+Flight::route('GET /getComments/@id', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT comment_id,profile_id,created_at,comment,group_id,type,parent_id FROM dis_comments where dis_id='$id' and status=1 and is_active=1 ORDER BY created_at DESC");
+       
+
+        $comms=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $comm=[
+                    'id' => $row['comment_id'],
+                    'group_id' => $row['group_id'],
+                    'maker' => $row['profile_id'],
+                    'type' => $row['type'],
+                    'comment' => $row['comment'],
+                    'public_date' => $row['created_at'],
+                    'parent_id' => $row['parent_id']
+                ];
+                
+                array_push($comms,$comm);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['comms'=>$comms]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
 Flight::route('GET /getCreatedGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
@@ -317,6 +436,179 @@ Flight::route('GET /getAdminGroupById/@id/@profile', function ($id,$profile) {
 
 
     $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.responsible_id='$profile' and g.status=1");
+       
+
+        $groups=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $group=[
+                    'id' => $row['group_id'],
+                    'name' => $row['name'],
+                    'profile' => $row['profile_id'],
+                    'status' => $row['is_active'],
+                    'qty' => $row['max_qty'],
+                    'public' => $row['public'],
+                    'auto_join' => $row['auto_join'],
+                    'responsible_id' => $row['responsible_id'],
+                    'responsible_id2' => $row['sub_responsible_id'],
+                    'public_add' => $row['public_add'],
+                    'members' => $row['members'],
+                    'maker' => $row['username'],
+                    'description' => $row['description']
+                ];
+                
+                array_push($groups,$group);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['groups'=>$groups]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+Flight::route('GET /getGeneralGroupById/@id/', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.status=1 and g.public=1");
+       
+
+        $groups=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $group=[
+                    'id' => $row['group_id'],
+                    'name' => $row['name'],
+                    'profile' => $row['profile_id'],
+                    'status' => $row['is_active'],
+                    'qty' => $row['max_qty'],
+                    'public' => $row['public'],
+                    'auto_join' => $row['auto_join'],
+                    'responsible_id' => $row['responsible_id'],
+                    'responsible_id2' => $row['sub_responsible_id'],
+                    'public_add' => $row['public_add'],
+                    'members' => $row['members'],
+                    'maker' => $row['username'],
+                    'description' => $row['description']
+                ];
+                
+                array_push($groups,$group);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['groups'=>$groups]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+Flight::route('GET /getGroupInfo/@id/', function ($id) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.status=1 and g.public=1");
+       
+
+        $groups=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $group=[
+                    'id' => $row['group_id'],
+                    'name' => $row['name'],
+                    'profile' => $row['profile_id'],
+                    'status' => $row['is_active'],
+                    'qty' => $row['max_qty'],
+                    'public' => $row['public'],
+                    'auto_join' => $row['auto_join'],
+                    'responsible_id' => $row['responsible_id'],
+                    'responsible_id2' => $row['sub_responsible_id'],
+                    'public_add' => $row['public_add'],
+                    'members' => $row['members'],
+                    'maker' => $row['username'],
+                    'description' => $row['description']
+                ];
+                
+                array_push($groups,$group);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['groups'=>$groups]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+
+Flight::route('GET /getGroupInfoUser/@id/@profile', function ($id,$profile) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM groups_general_list where group_id='$id' and profile_id='$profile'");
+       
+
+        $groups=[];
+ 
+        while($row = $query->fetch_assoc())
+        {
+            
+                $group=[
+                    'counter_group_user' => $row['counter']
+                ];
+                
+                array_push($groups,$group);
+                
+        }
+        $row=$query->fetch_assoc();
+
+        echo json_encode(['groups'=>$groups]);
+       
+  
+  // echo $uri; // muestra "/mi-pagina.php?id=123"
+
+       
+   
+
+});
+
+Flight::route('GET /getModerGroupById/@id/@profile', function ($id,$profile) {
+    header("Access-Control-Allow-Origin: *");
+
+    $conectar=conn();
+    $uri = $_SERVER['REQUEST_URI'];
+
+
+    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.sub_responsible_id='$profile' and g.status=1");
        
 
         $groups=[];
@@ -1474,6 +1766,54 @@ Flight::route('POST /postTask', function () {
         $primeros_ocho = substr($myuuid, 0, 8);
 
         $query= mysqli_query($conectar,"INSERT personal_task (task_id,profile_id,value,finish_date,start_date,prior,complete) VALUES ('$primeros_ocho','$profile','$task','$fdata','$sdata','$priority','created')");
+
+        echo 'true';
+    } catch (Exception $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
+});
+
+
+
+Flight::route('POST /postDis', function () {
+    try {
+        $conectar=conn();
+        $uri = $_SERVER['REQUEST_URI'];
+
+        $name=(Flight::request()->data->name);
+        $content=(Flight::request()->data->content);
+        $profile_id=(Flight::request()->data->profile_id);
+        $group_id=(Flight::request()->data->group_id);
+
+        require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
+        $con=new generateUuid();
+        $myuuid = $con->guidv4();
+        $primeros_ocho = substr($myuuid, 0, 8);
+        $fechaActual = date("Y-m-d");
+        $query= mysqli_query($conectar,"INSERT INTO groups_discussions (dis_id,group_id,profile_id,name,content,public_date) VALUES ('$primeros_ocho','$group_id','$profile_id','$name','$content','$fechaActual')");
+
+        echo 'true';
+    } catch (Exception $e) {
+        echo 'Error: ' . $e->getMessage();
+    }
+});
+
+
+Flight::route('POST /postComment', function () {
+    try {
+        $conectar=conn();
+       
+        $dis_id=(Flight::request()->data->dis_id);
+        $profile_id=(Flight::request()->data->profile_id);
+        $group_id=(Flight::request()->data->group_id);
+        $comment=(Flight::request()->data->comment);
+
+        require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
+        $con=new generateUuid();
+        $myuuid = $con->guidv4();
+        $primeros_ocho = substr($myuuid, 0, 8);
+        $fechaActual = date("Y-m-d");
+        $query= mysqli_query($conectar,"INSERT INTO dis_comments (comment_id,group_id,profile_id,comment,dis_id,type,parent_id) VALUES ('$primeros_ocho','$group_id','$profile_id','$comment','$dis_id','main','$primeros_ocho')");
 
         echo 'true';
     } catch (Exception $e) {
