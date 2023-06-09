@@ -3,15 +3,15 @@
 require 'flight/Flight.php';
 
 require 'database/db_users.php';
+require 'env/domain.php';
+
+ 
 
 Flight::route('POST /post', function () {
     header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
+   
     $user=(Flight::request()->data->user);
     $pass=(Flight::request()->data->pass);
     $tittle=(Flight::request()->data->tittle);
@@ -20,33 +20,36 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
     $public=(Flight::request()->data->public);
     $value=(Flight::request()->data->value);
 
-    require('../../apiRepos/v1/model/modelSecurity/uuid/uuidd.php');
-    $con=new generateUuid();
-        $myuuid = $con->guidv4();
-        $primeros_ocho = substr($myuuid, 0, 8);
-    $query= mysqli_query($conectar,"SELECT repo_id FROM repo_one where repo_id='$primeros_ocho'");
-    $nr=mysqli_num_rows($query);
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmarepos/apiRepos/v1/post/';
 
-    if($nr>=1){
-        $info=[
-
-            'data' => "ups! el id del repo está repetido , intenta nuevamente, gracias."
-            
-        ];
-     echo json_encode(['info'=>$info]);
-     //echo "ups! el id del repo está repetido , intenta nuevamente, gracias.";
-    }else{
-
-      
-
-   
-    $query= mysqli_query($conectar,"INSERT INTO repo_one (repo_id,tittle,value,keywords,type,user_id,public) VALUES ('$primeros_ocho','$tittle','$value','$keywords','$type','$user','$public')");
-       
-    
-   
-    //echo $uri; // muestra "/mi-pagina.php?id=123"
-        echo "false";
-    }
+              // Definir los datos a enviar en la solicitud POST
+              $data = array(
+                  'user' =>$user, 
+                  'pass' => $pass,
+                  'tittle' => $tittle,
+                  'keywords' => $keywords,
+                  'type' => $type,
+                  'public' => $public,
+                  'value' => $value
+                  );
+                  
+              $curl = curl_init();
+              
+              // Configurar las opciones de la sesión cURL
+              curl_setopt($curl, CURLOPT_URL, $url);
+              curl_setopt($curl, CURLOPT_POST, true);
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+             // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+              
+              // Ejecutar la solicitud y obtener la respuesta
+              $response1 = curl_exec($curl);
+              //var_dump($data);
+              // Cerrar la sesión cURL
+              curl_close($curl);
+echo $response1;
 });
 
 
@@ -54,12 +57,8 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 Flight::route('POST /postLoged', function () {
     
     header('Access-Control-Allow-Origin: *');
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header('content-type: application/json; charset=utf-8');
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    
 
     $username=(Flight::request()->data->username);
     $tittle=(Flight::request()->data->tittle);
@@ -68,45 +67,52 @@ header('content-type: application/json; charset=utf-8');
     $public=(Flight::request()->data->public);
     $value=(Flight::request()->data->value);
 
-    require('../../apiRepos/v1/model/modelSecurity/uuid/uuidd.php');
-    $con=new generateUuid();
-        $myuuid = $con->guidv4();
-        $primeros_ocho = substr($myuuid, 0, 8);
-    $query= mysqli_query($conectar,"SELECT repo_id FROM repo_one where repo_id='$primeros_ocho'");
-    $nr=mysqli_num_rows($query);
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmarepos/apiRepos/v1/postLoged/';
 
-    if($nr>=1){
-        $info=[
+              // Definir los datos a enviar en la solicitud POST
+              $data = array(
+                  'username' =>$username,
+                  'tittle' => $tittle,
+                  'keywords' => $keywords,
+                  'type' => $type,
+                  'public' => $public,
+                  'value' => $value
+                  );
+              //$payload = http_build_query($data);
+              // codificar el array asociativo en JSON
+//$json_data = json_encode($data);
 
-            'data' => "ups! el id del repo está repetido , intenta nuevamente, gracias."
-            
-        ];
-     echo json_encode(['info'=>$info]);
-     //echo "ups! el id del repo está repetido , intenta nuevamente, gracias.";
-    }else{
 
-      
 
+// enviar la respuesta con el payload codificado en JSON
+//echo $payload;
+              // Inicializar la sesión cURL
+              $curl = curl_init();
+              
+              // Configurar las opciones de la sesión cURL
+              curl_setopt($curl, CURLOPT_URL, $url);
+              curl_setopt($curl, CURLOPT_POST, true);
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+             // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+              
+              // Ejecutar la solicitud y obtener la respuesta
+              $response1 = curl_exec($curl);
+              //var_dump($data);
+              // Cerrar la sesión cURL
+              curl_close($curl);
+echo $response1;
    
-    $query= mysqli_query($conectar,"INSERT INTO repo_one (repo_id,tittle,value,keywords,type,user_id,public) VALUES ('$primeros_ocho','$tittle','$value','$keywords','$type','$username','$public')");
-       
-    
-    
-    echo "true"; // muestra "/mi-pagina.php?id=123"
-
-    }
+   
 });
 
 
 Flight::route('POST /putLoged', function () {
     
     header('Access-Control-Allow-Origin: *');
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header('content-type: application/json; charset=utf-8');
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    
 
     $username=(Flight::request()->data->username);
     $tittle=(Flight::request()->data->tittle);
@@ -115,87 +121,111 @@ header('content-type: application/json; charset=utf-8');
     $public=(Flight::request()->data->public);
     $value=(Flight::request()->data->value);
     $repo=(Flight::request()->data->repo);
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    
+    $url = $sub_domain.'/lugmacore/apiRepos/v1/putLoged/';
 
-    
-    
-     //echo "ups! el id del repo está repetido , intenta nuevamente, gracias.";
-   
+    // Definir los datos a enviar en la solicitud POST
+    $data = array(
+        'username' =>$username,
+        'tittle' => $tittle,
+        'keywords' => $keywords,
+        'type' => $type,
+        'public' => $public,
+        'value' => $value,
+        'repo' => $repo
+        );
+    //$payload = http_build_query($data);
+    // codificar el array asociativo en JSON
+//$json_data = json_encode($data);
 
-   
-    $query= mysqli_query($conectar,"UPDATE repo_one SET tittle='$tittle',value='$value',keywords='$keywords',type='$type',public='$public' WHERE user_id='$username' and repo_id='$repo'");
-       
-    
-    
-    echo "true"; // muestra "/mi-pagina.php?id=123"
 
+
+// enviar la respuesta con el payload codificado en JSON
+//echo $payload;
+    // Inicializar la sesión cURL
+    $curl = curl_init();
+    
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+   // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response1 = curl_exec($curl);
+    //var_dump($data);
+    // Cerrar la sesión cURL
+    curl_close($curl);
+echo $response1;
     
 });
 
 Flight::route('POST /delLoged', function () {
     
     header('Access-Control-Allow-Origin: *');
-    header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
-header('content-type: application/json; charset=utf-8');
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
+   
     $username=(Flight::request()->data->username);
     $repo=(Flight::request()->data->repo);
+    
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
 
-    
-    
-     //echo "ups! el id del repo está repetido , intenta nuevamente, gracias.";
-   
+    $url = $sub_domain.'/lugmarepos/apiRepos/v1/delLoged/';
 
-   
-    $query= mysqli_query($conectar,"DELETE FROM repo_one WHERE user_id='$username' and repo_id='$repo'");
-       
-    
-    
-    echo "true"; // muestra "/mi-pagina.php?id=123"
+    // Definir los datos a enviar en la solicitud POST
+    $data = array(
+        'username' =>$username,
+        'repo' => $repo
+        );
+    //$payload = http_build_query($data);
+    // codificar el array asociativo en JSON
+//$json_data = json_encode($data);
 
+
+
+// enviar la respuesta con el payload codificado en JSON
+//echo $payload;
+    // Inicializar la sesión cURL
+    $curl = curl_init();
     
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+   // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response1 = curl_exec($curl);
+    //var_dump($data);
+    // Cerrar la sesión cURL
+    curl_close($curl);
+echo $response1;
 });
 Flight::route('GET /get/@id', function ($id) {
     
     header("Access-Control-Allow-Origin: *");
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
 
+    $response= file_get_contents($sub_domain.'/lugmarepos/apiRepos/v1/get/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
 
-    $query= mysqli_query($conectar,"SELECT r.id,r.repo_id,r.tittle,r.value,r.user_id,r.type,u.user_id as userid,u.username FROM repo_one r JOIN users u ON u.username=r.user_id where r.repo_id ='$id' or r.tittle ='$id' or value ='$id' or r.user_id ='$id' or r.keywords LIKE '%$id%' or r.type='$id'or u.user_id='$id' LIMIT 1000");
-       
-
-        $repos=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $repo=[
-                    'id' => $row['id'],
-                    'repository' => $row['repo_id'],
-                    'tittle' => $row['tittle'],
-                    'info' => $row['value'],
-                    'user' => $row['user_id'],
-                    'type' => $row['type'],
-                    'user_id' => $row['userid'],
-                    'username' => $row['username']
-                ];
-                
-                array_push($repos,$repo);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['repos'=>$repos]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       //echo $response;
    
 
+       echo $response;
 });
 
 Flight::start();

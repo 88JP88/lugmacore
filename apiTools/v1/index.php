@@ -2,86 +2,29 @@
 
 require 'flight/Flight.php';
 
-require 'database/db_users.php';
-
+require_once 'env/domain.php';
 
 Flight::route('GET /getPTasks/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getPTasks/'.$id);
+    
 
-
-    $query= mysqli_query($conectar,"SELECT profile_id,task_id,value,finish_date,start_date,created_at,prior,complete FROM personal_task  where profile_id='$id'");
-       
-
-        $tasks=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $task=[
-                    'id' => $row['task_id'],
-                    'start' => $row['start_date'],
-                    'finish' => $row['finish_date'],
-                    'task' => $row['value'],
-                    'created' => $row['created_at'],
-                    'priority' => $row['prior'],
-                    'status' => $row['complete'],
-                    'profile' => $row['profile_id']
-                    
-                ];
-                
-                array_push($tasks,$task);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['tasks'=>$tasks]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
-   
+       echo $response;
 
 });
 
 
 Flight::route('GET /getPTasksById/@id/@task', function ($task,$id) {
     header("Access-Control-Allow-Origin: *");
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
 
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getPTasksById/'.$task.'/'.$id);
+    
 
-    $query= mysqli_query($conectar,"SELECT profile_id,task_id,value,finish_date,start_date,created_at,prior,complete FROM personal_task  where profile_id='$id' and task_id='$task'");
-       
-
-        $tasks=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $task=[
-                    'id' => $row['task_id'],
-                    'start' => $row['start_date'],
-                    'finish' => $row['finish_date'],
-                    'task' => $row['value'],
-                    'created' => $row['created_at'],
-                    'priority' => $row['prior'],
-                    'status' => $row['complete'],
-                    'profile' => $row['profile_id']
-                    
-                ];
-                
-                array_push($tasks,$task);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['tasks'=>$tasks]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
@@ -91,81 +34,24 @@ Flight::route('GET /getPTasksById/@id/@task', function ($task,$id) {
 Flight::route('GET /getSchedule/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT id,time,mon,tus,wen,thu,fri,sat,sun FROM schedules  where user_id='$id'");
-       
-
-        $sches=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $sche=[
-                    'id' => $row['id'],
-                    'time' => $row['time'],
-                    'mon' => $row['mon'],
-                    'tus' => $row['tus'],
-                    'wen' => $row['wen'],
-                    'thu' => $row['thu'],
-                    'fri' => $row['fri'],
-                    'sat' => $row['sat'],
-                    'sun' => $row['sun']
-                ];
-                
-                array_push($sches,$sche);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['sches'=>$sches]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getSchedule/'.$id);
+    
    
 
+       echo $response;
 });
 
 
 Flight::route('GET /getAlert/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT alert_id,value,created_at,is_active,start_date,profile_id FROM alerts_general where profile_id='$id' and status=1");
-       
-
-        $alerts=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $alert=[
-                    'id' => $row['alert_id'],
-                    'value' => $row['value'],
-                    'created' => $row['created_at'],
-                    'status' => $row['is_active'],
-                    'sdate' => $row['start_date'],
-                    'profile' => $row['profile_id']
-                ];
-                
-                array_push($alerts,$alert);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['alerts'=>$alerts]);
-       
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getAlert/'.$id);
   
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
 
-       
-   
+       echo $response;
 
 });
 
@@ -173,38 +59,12 @@ Flight::route('GET /getAlert/@id', function ($id) {
 
 Flight::route('GET /getDis/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getDis/'.$id);
+    
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT dis_id,group_id,profile_id,name,content,public_date FROM groups_discussions where group_id='$id' and status=1 and is_active=1 ORDER BY created_at DESC");
-       
-
-        $discs=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $disc=[
-                    'id' => $row['dis_id'],
-                    'group_id' => $row['group_id'],
-                    'maker' => $row['profile_id'],
-                    'name' => $row['name'],
-                    'content' => $row['content'],
-                    'public_date' => $row['public_date']
-                ];
-                
-                array_push($discs,$disc);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['discs'=>$discs]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
+       echo $response;
        
    
 
@@ -212,39 +72,13 @@ Flight::route('GET /getDis/@id', function ($id) {
 
 Flight::route('GET /getDisById/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getDisById/'.$id);
+   
+   
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT dis_id,group_id,profile_id,name,content,public_date FROM groups_discussions where dis_id='$id' and status=1 and is_active=1 ORDER BY created_at DESC");
-       
-
-        $discs=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $disc=[
-                    'id' => $row['dis_id'],
-                    'group_id' => $row['group_id'],
-                    'maker' => $row['profile_id'],
-                    'name' => $row['name'],
-                    'content' => $row['content'],
-                    'public_date' => $row['public_date']
-                ];
-                
-                array_push($discs,$disc);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['discs'=>$discs]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
@@ -252,224 +86,65 @@ Flight::route('GET /getDisById/@id', function ($id) {
 Flight::route('GET /getComments/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getComments/'.$id);
+   
 
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT comment_id,profile_id,created_at,comment,group_id,type,parent_id FROM dis_comments where dis_id='$id' and status=1 and is_active=1 ORDER BY created_at DESC");
-       
-
-        $comms=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $comm=[
-                    'id' => $row['comment_id'],
-                    'group_id' => $row['group_id'],
-                    'maker' => $row['profile_id'],
-                    'type' => $row['type'],
-                    'comment' => $row['comment'],
-                    'public_date' => $row['created_at'],
-                    'parent_id' => $row['parent_id']
-                ];
-                
-                array_push($comms,$comm);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['comms'=>$comms]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
 Flight::route('GET /getCreatedGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getCreatedGroups/'.$id);
+    
+   
 
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.profile_id='$id' and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
 
 
-Flight::route('GET /getPublicGroups/@id', function ($id) {
+Flight::route('GET /getPublicGroups/', function () {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.public=1 and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getPublicGroups/');
    
+   
+
+       echo $response;
 
 });
 
 
 Flight::route('GET /getGroupById/@id/@profile', function ($id,$profile) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and p.profile_id='$profile' and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getGroupById/'.$id.'/'.$profile);
    
+   
+
+       echo $response;
 
 });
 
 Flight::route('GET /getAdminGroupById/@id/@profile', function ($id,$profile) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getAdminGroupById/'.$id.'/'.$profile);
+    
+   
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.responsible_id='$profile' and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
@@ -477,45 +152,13 @@ Flight::route('GET /getAdminGroupById/@id/@profile', function ($id,$profile) {
 Flight::route('GET /getGeneralGroupById/@id/', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getGeneralGroupById/'.$id);
+    
+   
 
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.status=1 and g.public=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;       
    
 
 });
@@ -523,45 +166,13 @@ Flight::route('GET /getGeneralGroupById/@id/', function ($id) {
 Flight::route('GET /getGroupInfo/@id/', function ($id) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.status=1 and g.public=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getGroupInfo/'.$id);
   
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
 
-       
+       echo $response;       
+   
    
 
 });
@@ -570,33 +181,12 @@ Flight::route('GET /getGroupInfo/@id/', function ($id) {
 Flight::route('GET /getGroupInfoUser/@id/@profile', function ($id,$profile) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupInfoUser/'.$id.'/'.$profile);
+   
 
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM groups_general_list where group_id='$id' and profile_id='$profile'");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter_group_user' => $row['counter']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;      
    
 
 });
@@ -604,184 +194,51 @@ Flight::route('GET /getGroupInfoUser/@id/@profile', function ($id,$profile) {
 Flight::route('GET /getModerGroupById/@id/@profile', function ($id,$profile) {
     header("Access-Control-Allow-Origin: *");
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g  JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.group_id='$id' and g.sub_responsible_id='$profile' and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getModerGroupById/'.$id.'/'.$profile);
   
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
+   
 
-       
+       echo $response;      
+   
+
    
 
 });
+
+
 Flight::route('GET /getResponsibleGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-   // $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.responsible_id='$id' and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getResponsibleGroups/'.$id);
    
 
+       echo $response;
 });
 
 
 Flight::route('GET /getSubResponsibleGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT g.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where g.sub_responsible_id='$id' and g.status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getSubResponsibleGroups/'.$id);
   
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
 
-       
-   
+       echo $response;
 
 });
 
 
 Flight::route('GET /getParticipantGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT DISTINCT gl.group_id,g.name,g.profile_id,g.is_active,g.description,g.max_qty,g.public,g.auto_join,g.responsible_id,g.sub_responsible_id,g.public_add,g.members,u.username FROM groups_general g JOIN groups_general_list gl ON gl.group_id=g.group_id JOIN profiles p ON p.profile_id=g.profile_id JOIN users u ON u.user_id=p.user_id where gl.profile_id='$id' and gl.member_type in('member') and g.status=1 and gl.status=1");
-       
-
-        $groups=[];
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getParticipantGroups/'.$id);
  
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'profile' => $row['profile_id'],
-                    'status' => $row['is_active'],
-                    'qty' => $row['max_qty'],
-                    'public' => $row['public'],
-                    'auto_join' => $row['auto_join'],
-                    'responsible_id' => $row['responsible_id'],
-                    'responsible_id2' => $row['sub_responsible_id'],
-                    'public_add' => $row['public_add'],
-                    'members' => $row['members'],
-                    'maker' => $row['username'],
-                    'description' => $row['description']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
 
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
@@ -791,72 +248,24 @@ Flight::route('GET /getParticipantGroups/@id', function ($id) {
 
 Flight::route('GET /getUserGroups/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom_broker();
+    $response= file_get_contents($sub_domain.'/lugmabroker/apiTools/v1/getUserGroups/'.$id);
+    
+   
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT  gl.group_id,u.username,u.name,u.last_name,gl.profile_id,gl.status,gl.member_type FROM groups_general_list gl JOIN profiles p ON p.profile_id=gl.profile_id JOIN users u ON u.user_id=p.user_id where gl.group_id='$id' and gl.member_type in ('LowAdmin','HighAdmin','member')");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'id' => $row['group_id'],
-                    'name' => $row['name'],
-                    'last_name' => $row['last_name'],
-                    'status' => $row['status'],
-                    'profile' => $row['profile_id'],
-                    'username' => $row['username'],
-                    'member_type' => $row['member_type']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       echo $response;
    
 
 });
 Flight::route('GET /getGroupsMakerCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counterl FROM groups_general where profile_id='$id' and status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter' => $row['counterl']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupsMakerCounter/'.$id);
   
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
 
+       echo $response;
        
    
 
@@ -864,33 +273,14 @@ Flight::route('GET /getGroupsMakerCounter/@id', function ($id) {
 
 Flight::route('GET /getGroupsPublicCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counterl FROM groups_general where public=1 and status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter' => $row['counterl']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupsPublicCounter/'.$id);
   
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
+   
 
+       echo $response;
+       
        
    
 
@@ -898,33 +288,14 @@ Flight::route('GET /getGroupsPublicCounter/@id', function ($id) {
 
 Flight::route('GET /getGroupsHighCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
-
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter2 FROM groups_general where responsible_id='$id' and status=1");
-       
-
-        $groups=[];
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupsHighCounter/'.$id);
  
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter' => $row['counter2']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
+   
 
-        echo json_encode(['groups'=>$groups]);
+       echo $response;
        
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
        
    
 
@@ -933,720 +304,516 @@ Flight::route('GET /getGroupsHighCounter/@id', function ($id) {
 
 Flight::route('GET /getGroupsLowCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupsLowCounter/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
 
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter2 FROM groups_general where sub_responsible_id='$id' and status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter' => $row['counter2']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       //echo $response;
    
+
+       echo $response;
+       
+       
 
 });
 
 
 Flight::route('GET /getGroupsMemberCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupsMemberCounter/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
 
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter2 FROM groups_general_list where profile_id='$id' and member_type='member' and status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter' => $row['counter2']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       //echo $response;
    
+
+       echo $response;
+       
+       
 
 });
 
 
 Flight::route('GET /getGroupsTotalCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getGroupsTotalCounter/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
 
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter2 FROM groups_general_list where profile_id='$id' and member_type in ('member','HighAdmin','LowAdmin') and status=1");
-       
-
-        $groups=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-            
-                $group=[
-                    'counter' => $row['counter2']
-                ];
-                
-                array_push($groups,$group);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['groups'=>$groups]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       //echo $response;
    
+
+       echo $response;
+       
+       
+
 
 });
 
 
 Flight::route('GET /getAlertCounter/@id', function ($id) {
     header("Access-Control-Allow-Origin: *");
+    $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $response= file_get_contents($sub_domain.'/lugmatools/apiTools/v1/getAlertCounter/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
 
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-    $fechaActual = date("Y-m-d");
-    //echo $fechaActual;
-    
-    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM alerts_general where profile_id='$id' and is_active=1 and status=1 and start_date >= '$fechaActual'");
-       
-
-        $alerts=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $alert=[
-                    'counter' => $row['counter']
-                ];
-                
-                array_push($alerts,$alert);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['alerts'=>$alerts]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
+       //echo $response;
    
+
+       echo $response;
+       
+       
 
 });
 
 
 
 Flight::route('POST /putSchedule', function () {
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
+    
+    header("Access-Control-Allow-Origin: *");
     $day=(Flight::request()->data->day);
     $id=(Flight::request()->data->id);
     $value=(Flight::request()->data->value);
     $user=(Flight::request()->data->user_id);
-
     
+    $data = array(
+        'id' =>$id, 
+        'day' => $day,
+        'value' => $value,
+        'user_id' => $user
+        );
     
-
-        $query= mysqli_query($conectar,"UPDATE schedules SET $day='$value' WHERE user_id='$user' and id='$id'");
-       
-    echo 'true';
-       
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+$url = $sub_domain.'/lugmatools/apiTools/v1/putSchedule/';
     
+// Definir los datos a enviar en la solicitud POST
+$curl = curl_init();
 
-     
+// Configurar las opciones de la sesión cURL
+curl_setopt($curl, CURLOPT_URL, $url);
+curl_setopt($curl, CURLOPT_POST, true);
+curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+// Establecer el encabezado con el API key
+$headers = array(
+    'Content-Type: application/json'
+);
+curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
+// Ejecutar la solicitud y obtener la respuesta
+$response = curl_exec($curl);
+
+// Cerrar la sesión cURL
+curl_close($curl);
+
+     echo $response;
    
     
 });
 
-
 Flight::route('POST /postAlert', function () {
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+    header("Access-Control-Allow-Origin: *");
+    //require_once('../../apiTools/v1/controller/post_functions.php');
+    //require_once('../../apiTools/v1/controller/auth.php');
 
-
-    $sdate=(Flight::request()->data->sdate);
-    $value=(Flight::request()->data->value);
-    $user=(Flight::request()->data->profile_id);
-
-    require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
-        $con=new generateUuid();
-        $myuuid = $con->guidv4();
-        $primeros_ocho = substr($myuuid, 0, 8);
-
-        $query= mysqli_query($conectar,"INSERT INTO alerts_general (alert_id,value,start_date,profile_id) values ('$primeros_ocho','$value','$sdate','$user')");
-       
-    echo 'true';
-       
+    // Obtener todos los encabezados de la solicitud
     
-
-     
-   
+            $data1 =array (
+                'sdate' => Flight::request()->data->sdate,
+                'value' => Flight::request()->data->value,
+                'user' => Flight::request()->data->profile_id
+                
+            );
+            
+            require_once 'env/domain.php';
+            $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+            $url = $sub_domain.'/lugmatools/apiTools/v1/postAlert/';
     
+            // Definir los datos a enviar en la solicitud POST
+            $curl = curl_init();
+    
+            // Configurar las opciones de la sesión cURL
+            curl_setopt($curl, CURLOPT_URL, $url);
+            curl_setopt($curl, CURLOPT_POST, true);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+            // Establecer el encabezado con el API key
+            $headers = array(
+                'Content-Type: application/json'
+            );
+            curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+            
+            // Ejecutar la solicitud y obtener la respuesta
+            $response = curl_exec($curl);
+    
+            // Cerrar la sesión cURL
+            curl_close($curl);
+    
+            echo $response;
+      
 });
 
 
 Flight::route('POST /postGroups', function () {
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
-    $group=(Flight::request()->data->group);
-    $description=(Flight::request()->data->description);
-    
-    $qty=(Flight::request()->data->qty);
-    
-    $responsable_1=(Flight::request()->data->responsable_1);
-    
-    $responsable_2=(Flight::request()->data->responsable_2);
-    $user=(Flight::request()->data->profile_id);
-
-    require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
-    $con=new generateUuid();
-    $myuuid = $con->guidv4();
-    $primeros_ocho = substr($myuuid, 0, 8);
-
-
-
-
-    $query= mysqli_query($conectar,"SELECT p.profile_id as pid FROM profiles p JOIN users u ON u.user_id=p.user_id where u.user_id='$responsable_1' and u.is_active=1 and p.is_active=1");
-    $nr=mysqli_num_rows($query);
-    if($nr>=1){
-        while($row = $query->fetch_assoc())
-        {
-                   $res1= $row['pid'];
-                   
-                   $query= mysqli_query($conectar,"SELECT p.profile_id as pid FROM profiles p JOIN users u ON u.user_id=p.user_id where u.user_id='$responsable_2' and u.is_active=1 and p.is_active=1");
-                   $nr=mysqli_num_rows($query);
-                   if($nr>=1){
-                   while($row = $query->fetch_assoc())
-                   {
-                    
-                              $res2= $row['pid'];
-                              
-                              
-
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general (group_id,name,profile_id,description,max_qty,responsible_id,sub_responsible_id,members) values ('$primeros_ocho','$group','$user','$description','$qty','$res1','$res2',3)");
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$user','maker')");
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$res1','HighAdmin')");
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$res2','LowAdmin')");
-                   
-        
-                   }
-                   $row=$query->fetch_assoc();
-                   }else{
-                    $query= mysqli_query($conectar,"INSERT INTO groups_general (group_id,name,profile_id,description,max_qty,responsible_id,sub_responsible_id,members) values ('$primeros_ocho','$group','$user','$description','$qty','$res1','',2)");
-                    $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$user','maker')");
-                    $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$res1','HighAdmin')");
-                            
-        
-                   }
-                   
-        }
-        $row=$query->fetch_assoc();
-    }else{
-                  
-                   $query= mysqli_query($conectar,"SELECT p.profile_id as pid FROM profiles p JOIN users u ON u.user_id=p.user_id where u.user_id='$responsable_2' and u.is_active=1 and p.is_active=1");
-                   $nr=mysqli_num_rows($query);
-                   if($nr>=1){
-                   while($row = $query->fetch_assoc())
-                   {
-                              $res2= $row['pid'];
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general (group_id,name,profile_id,description,max_qty,responsible_id,sub_responsible_id,members) values ('$primeros_ocho','$group','$user','$description','$qty','','$res2',2)");
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$user','maker')");
-                             $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$res2','LowAdmin')");
-                            
-        
-                   }
-                   $row=$query->fetch_assoc();
-                   }else{
-                    $query= mysqli_query($conectar,"INSERT INTO groups_general (group_id,name,profile_id,description,max_qty,responsible_id,sub_responsible_id,members) values ('$primeros_ocho','$group','$user','$description','$qty','','',1)");
-                    $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$primeros_ocho','$user','maker')");
-                   
-        
-                   }
-                
-        
-
-    }
-        
-    
    
+    $data1=array(
+            
+        
+        'group'=>(Flight::request()->data->group),
+        'description'=>(Flight::request()->data->description),
+       'qty'=>(Flight::request()->data->qty),
+    'responsable_1'=>(Flight::request()->data->responsable_1),
+    'responsable_2'=>(Flight::request()->data->responsable_2),
+    'profile_id'=>(Flight::request()->data->profile_id)
+
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/postGroups/';
+
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     
-    echo 'true';
-     
-   
-    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Cerrar la sesión cURL
+    curl_close($curl);
+
+    echo $response;
+
 });
 
 
 
 Flight::route('POST /putMakerGroups', function () {
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-
-    $group=(Flight::request()->data->group);
-    $description=(Flight::request()->data->description);
-    
-    $qty=(Flight::request()->data->qty);
-    
-    $status=(Flight::request()->data->status);
-    
-    $public=(Flight::request()->data->public);
-    $auto_join=(Flight::request()->data->auto_join);
-    $auto_add=(Flight::request()->data->auto_add);
-    $group_id=(Flight::request()->data->group_id);
-    $user=(Flight::request()->data->profile_id);
-
+    $data1=array(
+            
+        
+        'group'=>(Flight::request()->data->group),
+        'description'=>(Flight::request()->data->description),
+       'qty'=>(Flight::request()->data->qty),
    
-                             $query= mysqli_query($conectar,"UPDATE groups_general SET name='$group',description='$description',max_qty='$qty',is_active='$status',public='$public', auto_join='$auto_join',public_add='$auto_add' WHERE profile_id='$user' and group_id='$group_id'");
-                            
+    'status'=>(Flight::request()->data->status),
+    'public'=>(Flight::request()->data->public),
+    'auto_join'=>(Flight::request()->data->auto_join),
+    'auto_add'=>(Flight::request()->data->auto_add),
+    'group_id'=>(Flight::request()->data->group_id),
+    'profile_id'=>(Flight::request()->data->profile_id)
+
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putMakerGroups/';
+
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     
-    echo 'true';
-     
-   
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Cerrar la sesión cURL
+    curl_close($curl);
+
+    echo $response;
+
     
 });
 
 Flight::route('POST /putAdminGroups', function () {
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
-
-    $description=(Flight::request()->data->description);
-    
-    $qty=(Flight::request()->data->qty);
-    
-    $status=(Flight::request()->data->status);
-    
-    $public=(Flight::request()->data->public);
-    $auto_join=(Flight::request()->data->auto_join);
-    $auto_add=(Flight::request()->data->auto_add);
-    $group_id=(Flight::request()->data->group_id);
-    $user=(Flight::request()->data->profile_id);
-
+    $data1=array(
+            
+        
+        'group'=>(Flight::request()->data->group),
+        'description'=>(Flight::request()->data->description),
+       'qty'=>(Flight::request()->data->qty),
    
-                             $query= mysqli_query($conectar,"UPDATE groups_general SET description='$description',max_qty='$qty',is_active='$status',public='$public', auto_join='$auto_join',public_add='$auto_add' WHERE responsible_id='$user' and group_id='$group_id'");
-                            
+    'status'=>(Flight::request()->data->status),
+    'public'=>(Flight::request()->data->public),
+    'auto_join'=>(Flight::request()->data->auto_join),
+    'auto_add'=>(Flight::request()->data->auto_add),
+    'group_id'=>(Flight::request()->data->group_id),
+    'profile_id'=>(Flight::request()->data->profile_id)
+
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putAdminGroups/';
+
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     
-    echo 'true';
-     
-   
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Cerrar la sesión cURL
+    curl_close($curl);
+
+    echo $response;
+
     
 });
 
 Flight::route('POST /putHideUsersGroups', function () {
-    $conectar=conn();
+   
     //$uri = $_SERVER['REQUEST_URI'];
 
 
-    $value=(Flight::request()->data->value);
-    $group_id=(Flight::request()->data->group_id);
-    $user=(Flight::request()->data->profile_id);
-
-    if($value=="block"){
-        $query= mysqli_query($conectar,"UPDATE groups_general_list SET status=0 WHERE profile_id='$user' and group_id='$group_id'");
-                            
-
-    }
-    if($value=="unblock"){
-        $query= mysqli_query($conectar,"UPDATE groups_general_list SET status=1 WHERE profile_id='$user' and group_id='$group_id'");
-                            
-
-    }
-    if($value=="del"){
-        $query= mysqli_query($conectar,"DELETE FROM groups_general_list WHERE profile_id='$user' and group_id='$group_id'");
-        $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM groups_general_list WHERE group_id='$group_id'");
-       
-
-        $users=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $user1=[
-                    'counter' => $row['counter']
-                ];
-                
-                array_push($users,$user1);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        $response= json_encode(['users'=>$users]);
-       
-        $data = json_decode($response);
-        foreach ($data->users as $character) {
-          
-           
-        }
-    
-      $suma=  $character->counter;
-      $suma1=$suma-1; 
-
-
-
-             $query= mysqli_query($conectar,"UPDATE groups_general SET members='$suma1' WHERE group_id='$group_id'");
-
-
-    }
-
    
-                            
-    
-    echo 'true';
-     
+    $data1=array(
+            
+        
+        'value'=>(Flight::request()->data->value),
+        'group_id'=>(Flight::request()->data->group_id),
+       'profile_id'=>(Flight::request()->data->profile_id)
    
+    
+
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putHideUsersGroups/';
+
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Cerrar la sesión cURL
+    curl_close($curl);
+
+    echo $response;
+
+    
     
 });
 
 Flight::route('POST /putMakerAdminModerGroups', function () {
-    $conectar=conn();
+   
     //$uri = $_SERVER['REQUEST_URI'];
 
-    $value=(Flight::request()->data->value);
-    $group_id=(Flight::request()->data->group_id);
-    $profile_id=(Flight::request()->data->profile_id);
-    $user=(Flight::request()->data->user);
+    
 
- if($value=="admin"){
-
-
-
-    $query= mysqli_query($conectar,"SELECT * FROM groups_general_list where profile_id='$user' and group_id='$group_id'");
-                   $nr=mysqli_num_rows($query);
-                   if($nr>=1){
-    $query= mysqli_query($conectar,"UPDATE groups_general SET responsible_id='$user' WHERE profile_id='$profile_id' and group_id='$group_id'");
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='member' WHERE group_id='$group_id' and member_type='HighAdmin'");
    
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='HighAdmin' WHERE profile_id='$user' and group_id='$group_id' and member_type IN ('member','LowAdmin')");
-                   }else{
-                    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM groups_general_list WHERE group_id='$group_id'");
-       
-
-                    $users=[];
-             
-                    while($row = $query->fetch_assoc())
-                    {
-                            $user1=[
-                                'counter' => $row['counter']
-                            ];
-                            
-                            array_push($users,$user1);
-                            
-                    }
-                    $row=$query->fetch_assoc();
+    $data1=array(
             
-                    $response= json_encode(['users'=>$users]);
-                   
-                    $data = json_decode($response);
-                    foreach ($data->users as $character) {
-                      
-                       
-                    }
-                
-                  $suma=  $character->counter;
-                  $suma1=$suma+1; 
-                  $query= mysqli_query($conectar,"SELECT max_qty FROM groups_general WHERE group_id='$group_id'");
-       
-
-                  $users=[];
-           
-                  while($row = $query->fetch_assoc())
-                  {
-                          $user2=[
-                              'counter' => $row['max_qty']
-                          ];
-                          
-                          array_push($users,$user2);
-                          
-                  }
-                  $row=$query->fetch_assoc();
-          
-                  $response= json_encode(['users'=>$users]);
-                 
-                  $data = json_decode($response);
-                  foreach ($data->users as $character2) {
-                    
-                     
-                  }
-              
-                $suma11=  $character2->counter;
-            if($suma1 > $suma11){
-                echo "false";
-            }
-            if($suma1<=$suma11){
-                $query= mysqli_query($conectar,"UPDATE groups_general SET members='$suma1' WHERE group_id='$group_id'");
-    
-                    
-                $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$group_id','$user','member')");
-                $query= mysqli_query($conectar,"UPDATE groups_general SET responsible_id='$user' WHERE profile_id='$profile_id' and group_id='$group_id'");
-$query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='member' WHERE group_id='$group_id' and member_type='HighAdmin'");
-
-$query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='HighAdmin' WHERE profile_id='$user' and group_id='$group_id' and member_type IN ('member')");
-         echo "true";
-            }
-
-                        
-                   }
-
- }
- if($value=="moder"){
+        
+        'value'=>(Flight::request()->data->value),
+        'group_id'=>(Flight::request()->data->group_id),
+       'profile_id'=>(Flight::request()->data->profile_id),
+       'user'=>(Flight::request()->data->user)
    
-    $query= mysqli_query($conectar,"SELECT * FROM groups_general_list where profile_id='$user' and group_id='$group_id'");
-                   $nr=mysqli_num_rows($query);
-                   if($nr>=1){
-    $query= mysqli_query($conectar,"UPDATE groups_general SET sub_responsible_id='$user' WHERE profile_id='$profile_id' and group_id='$group_id'");
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='member' WHERE group_id='$group_id' and member_type='LowAdmin'");
-   
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='LowAdmin' WHERE profile_id='$user' and group_id='$group_id' and member_type IN ('member','LowAdmin')");
-                   }else{
-
-                    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM groups_general_list WHERE group_id='$group_id'");
-       
-
-                    $users=[];
-             
-                    while($row = $query->fetch_assoc())
-                    {
-                            $user1=[
-                                'counter' => $row['counter']
-                            ];
-                            
-                            array_push($users,$user1);
-                            
-                    }
-                    $row=$query->fetch_assoc();
-            
-                    $response= json_encode(['users'=>$users]);
-                   
-                    $data = json_decode($response);
-                    foreach ($data->users as $character) {
-                      
-                       
-                    }
-                
-                  $suma=  $character->counter;
-                  $suma1=$suma+1; 
     
 
-                  $query= mysqli_query($conectar,"SELECT max_qty FROM groups_general WHERE group_id='$group_id'");
-       
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putMakerAdminModerGroups/';
 
-                  $users=[];
-           
-                  while($row = $query->fetch_assoc())
-                  {
-                          $user2=[
-                              'counter' => $row['max_qty']
-                          ];
-                          
-                          array_push($users,$user2);
-                          
-                  }
-                  $row=$query->fetch_assoc();
-          
-                  $response= json_encode(['users'=>$users]);
-                 
-                  $data = json_decode($response);
-                  foreach ($data->users as $character2) {
-                    
-                     
-                  }
-              
-                $suma11=  $character2->counter;
-            if($suma1 > $suma11){
-                echo "false";
-            }
-            if($suma1<=$suma11){
-                $query= mysqli_query($conectar,"UPDATE groups_general SET members='$suma1' WHERE group_id='$group_id'");
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     
-                    $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$group_id','$user','member')");
-                    $query= mysqli_query($conectar,"UPDATE groups_general SET sub_responsible_id='$user' WHERE profile_id='$profile_id' and group_id='$group_id'");
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='member' WHERE group_id='$group_id' and member_type='LowAdmin'");
-   
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET member_type='LowAdmin' WHERE profile_id='$user' and group_id='$group_id' and member_type IN ('member')");
-            echo "true";
-            }
-   
-                    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
 
- }
-                           
-   
-   
-                           
-    }
-     
-    if($value=="member"){
-   
-        $query= mysqli_query($conectar,"SELECT * FROM groups_general_list where profile_id='$user' and group_id='$group_id'");
-                       $nr=mysqli_num_rows($query);
-                       if($nr>=1){
-                        
-                   }else{
-    
-                    $query= mysqli_query($conectar,"SELECT COUNT(*) as counter FROM groups_general_list WHERE group_id='$group_id' and member_type IN ('member','LowAdmin','HighAdmin')");
-       
+    // Cerrar la sesión cURL
+    curl_close($curl);
 
-                    $users=[];
-             
-                    while($row = $query->fetch_assoc())
-                    {
-                            $user1=[
-                                'counter' => $row['counter']
-                            ];
-                            
-                            array_push($users,$user1);
-                            
-                    }
-                    $row=$query->fetch_assoc();
-            
-                    $response= json_encode(['users'=>$users]);
-                   
-                    $data = json_decode($response);
-                    foreach ($data->users as $character) {
-                      
-                       
-                    }
-                
-                  $suma=  $character->counter;
-                  $suma1=$suma+1; 
-    
-                  $query= mysqli_query($conectar,"SELECT max_qty FROM groups_general WHERE group_id='$group_id'");
-       
+    echo $response;
 
-                  $users=[];
-           
-                  while($row = $query->fetch_assoc())
-                  {
-                          $user2=[
-                              'counter' => $row['max_qty']
-                          ];
-                          
-                          array_push($users,$user2);
-                          
-                  }
-                  $row=$query->fetch_assoc();
-          
-                  $response= json_encode(['users'=>$users]);
-                 
-                  $data = json_decode($response);
-                  foreach ($data->users as $character2) {
-                    
-                     
-                  }
-              
-                $suma11=  $character2->counter;
-            if($suma1 > $suma11){
-                echo "false";
-            }
-            if($suma1<=$suma11){
-                $query= mysqli_query($conectar,"INSERT INTO groups_general_list (group_id,profile_id,member_type) values ('$group_id','$user','member')");
-                $query= mysqli_query($conectar,"UPDATE groups_general SET members='$suma1' WHERE group_id='$group_id'");
-                echo "true";
-            }
-
-   
-                       
-    
-     }
-                               
-       
-       
-                               
-        }
-   
     
 });
 
 
 Flight::route('POST /delMakerGroups', function () {
-    $conectar=conn();
-    //$uri = $_SERVER['REQUEST_URI'];
+   ////$uri = $_SERVER['REQUEST_URI'];
 
    
     $group_id=(Flight::request()->data->group_id);
     $profile_id=(Flight::request()->data->profile_id);
 
 
-    $query= mysqli_query($conectar,"UPDATE groups_general SET status=0 WHERE profile_id='$profile_id' and group_id='$group_id'");
-    $query= mysqli_query($conectar,"UPDATE groups_general_list SET status=0 WHERE group_id='$group_id'");
+   
+    $data1=array(
+            
+        
+        'group_id'=>(Flight::request()->data->group_id),
+       'profile_id'=>(Flight::request()->data->profile_id)
+   
     
 
-                           
-   
-   
-                           
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/delMakerGroups/';
+
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
     
-    echo 'true';
-     
-   
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Cerrar la sesión cURL
+    curl_close($curl);
+
+    echo $response;
+
     
 });
 
 
 Flight::route('POST /putAlert', function () {
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
+  
 
-
-    $status=(Flight::request()->data->status);
-    $profile=(Flight::request()->data->profile);
-    $alert_id=(Flight::request()->data->alert_id);
-
-    if($status=="is_active"){
-        $query= mysqli_query($conectar,"UPDATE alerts_general  set is_active=0 where alert_id='$alert_id' and profile_id='$profile'");
-       
-    }
-    if($status=="start"){
-        $query= mysqli_query($conectar,"UPDATE alerts_general  set is_active=1 where alert_id='$alert_id' and profile_id='$profile'");
-       
-    }
-    if($status=="del"){
-        $query= mysqli_query($conectar,"DELETE FROM alerts_general where alert_id='$alert_id' and profile_id='$profile'");
-       
-    }
-
+    
+    $data1 =array (
+        'status' => Flight::request()->data->status,
+        'profile' => Flight::request()->data->profile,
+        'alert_id' => Flight::request()->data->alert_id
         
-    echo 'true';
+    );
+    require_once 'env/domain.php';
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putAlert/';
+
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+
+    // Cerrar la sesión cURL
+    curl_close($curl);
+
+    echo $response;
        
     
 
@@ -1656,8 +823,8 @@ Flight::route('POST /putAlert', function () {
 });
 
 Flight::route('POST /putTask', function () {
-    try {
-        $conectar=conn();
+    
+      
         //$uri = $_SERVER['REQUEST_URI'];
 
         $task=(Flight::request()->data->task);
@@ -1667,92 +834,138 @@ Flight::route('POST /putTask', function () {
         $profile=(Flight::request()->data->profile);
         $task_id=(Flight::request()->data->task_id);
 
+        $data = array(
+            'task' =>$task, 
+            'sdata' => $sdata,
+            'fdata' => $fdata,
+            'priority' => $priority,
+            'profile' => $profile,
+            'task_id' => $task_id
+
+            );
         
-
-        $query= mysqli_query($conectar,"UPDATE personal_task SET value='$task',finish_date='$fdata',start_date='$sdata',prior='$priority' WHERE profile_id='$profile' and task_id='$task_id'");
-
-        echo 'true';
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
+        $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putTask/';
+        
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+    
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+    
+    // Cerrar la sesión cURL
+    curl_close($curl);
+    
+         echo $response;
    
     
 });
 
 
 Flight::route('POST /putTaskStatus', function () {
-    try {
-        $conectar=conn();
+    
+     
         //$uri = $_SERVER['REQUEST_URI'];
 
         $status=(Flight::request()->data->status);
         $profile=(Flight::request()->data->profile);
         $task_id=(Flight::request()->data->task_id);
 
-     
+        $data = array(
+            'status' =>$status, 
+            'profile' => $profile,
+            'task_id' => $task_id
 
-        $query= mysqli_query($conectar,"UPDATE personal_task SET complete='$status' WHERE profile_id='$profile' and task_id='$task_id'");
-
-        echo 'true';
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
+            );
+        
+        $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putTaskStatus/';
+        
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+    
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+    
+    // Cerrar la sesión cURL
+    curl_close($curl);
+    
+         echo $response;
    
     
 });
 
 Flight::route('POST /putTaskDel', function () {
-    try {
-        $conectar=conn();
-        //$uri = $_SERVER['REQUEST_URI'];
-
+    
         $status=(Flight::request()->data->status);
         $profile=(Flight::request()->data->profile);
         $task_id=(Flight::request()->data->task_id);
-if($status=="hide"){
-    $query= mysqli_query($conectar,"UPDATE personal_task SET is_active=0 WHERE profile_id='$profile' and task_id='$task_id'");
 
-    echo 'true';
+        $data = array(
+            'status' =>$status, 
+            'profile' => $profile,
+            'task_id' => $task_id
 
-}
-if($status=="blc"){
-    $query= mysqli_query($conectar,"UPDATE personal_task SET status=0 WHERE profile_id='$profile' and task_id='$task_id'");
-
-    echo 'true';
-
-}
-if($status=="del"){
-    $query= mysqli_query($conectar,"DELETE from personal_task WHERE profile_id='$profile' and task_id='$task_id'");
-
-    echo 'true';
-
-}
-if($status=="ublc"){
-    $query= mysqli_query($conectar,"UPDATE personal_task SET status=1 WHERE profile_id='$profile' and task_id='$task_id'");
-
-    echo 'true';
-
-}
-if($status=="uhide"){
-    $query= mysqli_query($conectar,"UPDATE personal_task SET is_active=1 WHERE profile_id='$profile' and task_id='$task_id'");
-
-    echo 'true';
-
-}
-
-       
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
-   
+            );
+        
+        $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/putTaskDel/';
+        
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+    
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+    
+    // Cerrar la sesión cURL
+    curl_close($curl);
+    
+         echo $response;
     
 });
 
 
 Flight::route('POST /postTask', function () {
-    try {
-        $conectar=conn();
-        $uri = $_SERVER['REQUEST_URI'];
+    
 
         $task=(Flight::request()->data->task);
         $sdata=(Flight::request()->data->sdata);
@@ -1760,103 +973,140 @@ Flight::route('POST /postTask', function () {
         $priority=(Flight::request()->data->priority);
         $profile=(Flight::request()->data->profile);
 
-        require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
-        $con=new generateUuid();
-        $myuuid = $con->guidv4();
-        $primeros_ocho = substr($myuuid, 0, 8);
-
-        $query= mysqli_query($conectar,"INSERT personal_task (task_id,profile_id,value,finish_date,start_date,prior,complete) VALUES ('$primeros_ocho','$profile','$task','$fdata','$sdata','$priority','created')");
-
-        echo 'true';
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
+        $data = array(
+            'task' =>$task, 
+            'sdata' => $sdata,
+            'fdata' => $fdata,
+            'priority' => $priority,
+            'profile' => $profile
+            );
+        
+        $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmatools/apiTools/v1/postTask/';
+        
+    // Definir los datos a enviar en la solicitud POST
+    $curl = curl_init();
+    
+    // Configurar las opciones de la sesión cURL
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_POST, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data));
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+    // Establecer el encabezado con el API key
+    $headers = array(
+        'Content-Type: application/json'
+    );
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    
+    // Ejecutar la solicitud y obtener la respuesta
+    $response = curl_exec($curl);
+    
+    // Cerrar la sesión cURL
+    curl_close($curl);
+    
+         echo $response;
+  
 });
 
 
 
 Flight::route('POST /postDis', function () {
-    try {
-        $conectar=conn();
-        $uri = $_SERVER['REQUEST_URI'];
+    
+        
 
-        $name=(Flight::request()->data->name);
-        $content=(Flight::request()->data->content);
-        $profile_id=(Flight::request()->data->profile_id);
-        $group_id=(Flight::request()->data->group_id);
+       
 
-        require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
-        $con=new generateUuid();
-        $myuuid = $con->guidv4();
-        $primeros_ocho = substr($myuuid, 0, 8);
-        $fechaActual = date("Y-m-d");
-        $query= mysqli_query($conectar,"INSERT INTO groups_discussions (dis_id,group_id,profile_id,name,content,public_date) VALUES ('$primeros_ocho','$group_id','$profile_id','$name','$content','$fechaActual')");
-
-        echo 'true';
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
+    
+        $data1 =array (
+            'name' => Flight::request()->data->name,
+            'profile_id' => Flight::request()->data->profile_id,
+            'content' => Flight::request()->data->content,
+            'group_id' => Flight::request()->data->group_id
+            
+            
+        );
+        require_once 'env/domain.php';
+        $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+        $url = $sub_domain.'/lugmatools/apiTools/v1/postDis/';
+    
+        // Definir los datos a enviar en la solicitud POST
+        $curl = curl_init();
+    
+        // Configurar las opciones de la sesión cURL
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+        // Establecer el encabezado con el API key
+        $headers = array(
+            'Content-Type: application/json'
+        );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        
+        // Ejecutar la solicitud y obtener la respuesta
+        $response = curl_exec($curl);
+    
+        // Cerrar la sesión cURL
+        curl_close($curl);
+    
+        echo $response;
+           
+        
+    
+         
+      
 });
 
 
 Flight::route('POST /postComment', function () {
-    try {
-        $conectar=conn();
+
+
+    
+     
+    
+        $data1 =array (
+            'dis_id' => Flight::request()->data->dis_id,
+            'profile_id' => Flight::request()->data->profile_id,
+            'group_id' => Flight::request()->data->group_id,
+            'comment' => Flight::request()->data->comment
+            
+        );
+        require_once 'env/domain.php';
+        $sub_domaincon=new model_dom;
+    $sub_domain=$sub_domaincon->dom();
+        $url = $sub_domain.'/lugmatools/apiTools/v1/postComment/';
+    
+        // Definir los datos a enviar en la solicitud POST
+        $curl = curl_init();
+    
+        // Configurar las opciones de la sesión cURL
+        curl_setopt($curl, CURLOPT_URL, $url);
+        curl_setopt($curl, CURLOPT_POST, true);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($data1));
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    
+        // Establecer el encabezado con el API key
+        $headers = array(
+            'Content-Type: application/json'
+        );
+        curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+        
+        // Ejecutar la solicitud y obtener la respuesta
+        $response = curl_exec($curl);
+    
+        // Cerrar la sesión cURL
+        curl_close($curl);
+    
+        echo $response;
+           
+        
+    
+         
        
-        $dis_id=(Flight::request()->data->dis_id);
-        $profile_id=(Flight::request()->data->profile_id);
-        $group_id=(Flight::request()->data->group_id);
-        $comment=(Flight::request()->data->comment);
-
-        require('../../apiTools/v1/model/modelSecurity/uuid/uuidd.php');
-        $con=new generateUuid();
-        $myuuid = $con->guidv4();
-        $primeros_ocho = substr($myuuid, 0, 8);
-        $fechaActual = date("Y-m-d");
-        $query= mysqli_query($conectar,"INSERT INTO dis_comments (comment_id,group_id,profile_id,comment,dis_id,type,parent_id) VALUES ('$primeros_ocho','$group_id','$profile_id','$comment','$dis_id','main','$primeros_ocho')");
-
-        echo 'true';
-    } catch (Exception $e) {
-        echo 'Error: ' . $e->getMessage();
-    }
-});
-
-Flight::route('GET /getSubs/', function () {
-    header("Access-Control-Allow-Origin: *");
-    $conectar=conn();
-    $uri = $_SERVER['REQUEST_URI'];
-
-
-    $query= mysqli_query($conectar,"SELECT sub_id,name,info,total_ammount,day_amount,rate_day,sub_type FROM subscriptions where status=1 and is_active=1");
-       
-
-        $subs=[];
- 
-        while($row = $query->fetch_assoc())
-        {
-                $sub=[
-                    'sub_id' => $row['sub_id'],
-                    'name' => $row['name'],
-                    'info' => $row['info'],
-                    'total' => $row['total_ammount'],
-                    'day' => $row['day_amount'],
-                    'rate' => $row['rate_day'],
-                    'type' => $row['sub_type']
-                ];
-                
-                array_push($subs,$sub);
-                
-        }
-        $row=$query->fetch_assoc();
-
-        echo json_encode(['subs'=>$subs]);
-       
-  
-  // echo $uri; // muestra "/mi-pagina.php?id=123"
-
-       
-   
-
 });
 
 
