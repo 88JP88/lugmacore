@@ -105,7 +105,6 @@ $sub_domain=$sub_domaincon->dom();
               curl_close($curl);
 echo $response1;
    
-   
 });
 
 
@@ -170,7 +169,7 @@ Flight::route('POST /delLoged', function () {
    
     $username=(Flight::request()->data->username);
     $repo=(Flight::request()->data->repo);
-    
+
     $sub_domaincon=new model_dom;
     $sub_domain=$sub_domaincon->dom();
 
