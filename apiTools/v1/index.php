@@ -869,8 +869,8 @@ Flight::route('POST /putTask', function () {
     // Cerrar la sesión cURL
     curl_close($curl);
     
-         echo $response;
-   
+            echo $response;
+        
     
 });
 

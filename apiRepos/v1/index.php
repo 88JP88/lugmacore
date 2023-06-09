@@ -120,10 +120,11 @@ Flight::route('POST /putLoged', function () {
     $public=(Flight::request()->data->public);
     $value=(Flight::request()->data->value);
     $repo=(Flight::request()->data->repo);
+
     $sub_domaincon=new model_dom;
     $sub_domain=$sub_domaincon->dom();
     
-    $url = $sub_domain.'/lugmacore/apiRepos/v1/putLoged/';
+    $url = $sub_domain.'/lugmarepos/apiRepos/v1/putLoged/';
 
     // Definir los datos a enviar en la solicitud POST
     $data = array(
