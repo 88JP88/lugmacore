@@ -223,6 +223,29 @@ Flight::route('GET /getInboxMail/@id', function ($id) {
 });
 
 
+Flight::route('GET /getCopyMail/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getCopyMail/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
+
+       //echo $response;
+   
+
+       echo $response;
+});
+
+
 Flight::route('GET /getSendMail/@id', function ($id) {
     
     header("Access-Control-Allow-Origin: *");
