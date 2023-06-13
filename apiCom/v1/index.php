@@ -254,13 +254,13 @@ Flight::route('GET /getInboxMail/@id', function ($id) {
 
        echo $response;
 });
-Flight::route('GET /getReciclerMail/@id', function ($id) {
+Flight::route('GET /getReciclerMail/@id/@id2', function ($id,$id2) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getReciclerMail/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getReciclerMail/'.$id.'/'.$id2);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
@@ -277,13 +277,13 @@ Flight::route('GET /getReciclerMail/@id', function ($id) {
 });
 
 
-Flight::route('GET /getCopyMail/@id', function ($id) {
+Flight::route('GET /getCopyMail/@id/@id2', function ($id,$id2) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getCopyMail/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getCopyMail/'.$id.'/'.$id2);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
@@ -324,13 +324,13 @@ Flight::route('GET /getSendMail/@id', function ($id) {
 
 
 
-Flight::route('GET /getImportantMail/@id', function ($id) {
+Flight::route('GET /getImportantMail/@id/@id2', function ($id,$id2) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getImportantMail/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getImportantMail/'.$id.'/'.$id2);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
@@ -346,13 +346,13 @@ Flight::route('GET /getImportantMail/@id', function ($id) {
        echo $response;
 });
 
-Flight::route('GET /getSpamMail/@id', function ($id) {
+Flight::route('GET /getSpamMail/@id/@id2', function ($id,$id2) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getSpamMail/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getSpamMail/'.$id.'/'.$id2);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
@@ -369,13 +369,13 @@ Flight::route('GET /getSpamMail/@id', function ($id) {
 });
 
 
-Flight::route('GET /getReadMail/@id', function ($id) {
+Flight::route('GET /getReadMail/@id/@id2', function ($id,$id2) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getReadMail/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getReadMail/'.$id.'/'.$id2);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
