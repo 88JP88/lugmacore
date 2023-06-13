@@ -46,6 +46,39 @@ echo $response1;
 
 });
 
+Flight::route('POST /putCategoryMail', function () {
+    header("Access-Control-Allow-Origin: *");
+   $general_id=(Flight::request()->data->general_id);
+    $value=(Flight::request()->data->value);
+
+    $sub_domaincon=new model_dom;
+$sub_domain=$sub_domaincon->dom();
+    $url = $sub_domain.'/lugmacom/apiMail/v1/putCategoryMail/';
+
+              // Definir los datos a enviar en la solicitud POST
+              $data = array(
+                  'general_id' =>$general_id, 
+                  'value' => $value
+                  );
+                  
+              $curl = curl_init();
+              
+              // Configurar las opciones de la sesión cURL
+              curl_setopt($curl, CURLOPT_URL, $url);
+              curl_setopt($curl, CURLOPT_POST, true);
+              curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+              curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+             // curl_setopt($curl, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
+              
+              // Ejecutar la solicitud y obtener la respuesta
+              $response1 = curl_exec($curl);
+              //var_dump($data);
+              // Cerrar la sesión cURL
+              curl_close($curl);
+echo $response1;
+
+});
+
 
 
 Flight::route('POST /postLoged', function () {
@@ -207,6 +240,27 @@ Flight::route('GET /getInboxMail/@id', function ($id) {
     $sub_domain=$sub_domaincons->dom();
 
     $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getInboxMail/'.$id);
+    //echo $response;
+    /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
+    $ch = curl_init($url);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $response = curl_exec($ch);
+    curl_close($ch);*/
+    //var_dump ($response);
+    //$ss=json_encode($response);
+
+       //echo $response;
+   
+
+       echo $response;
+});
+Flight::route('GET /getReciclerMail/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getReciclerMail/'.$id);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
