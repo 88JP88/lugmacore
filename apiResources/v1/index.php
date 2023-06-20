@@ -173,18 +173,79 @@ Flight::route('GET /filterMyStudents/@id/@student/@type', function ($id,$student
        echo $response;
 });
 
+
+Flight::route('GET /filterMyTeachers/@id/@teacher/@type', function ($id,$teacher,$type) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/filterMyTeachers/'.$id."/".$teacher."/".$type);
+    
+       echo $response;
+});
+
 Flight::route('GET /allMyTeachers/@id', function ($id) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeacherss/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeachers/'.$id);
    
 
        echo $response;
 });
 
+Flight::route('GET /allMyTeachersProfile/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeachersProfile/'.$id);
+   
+
+       echo $response;
+});
+
+Flight::route('GET /allMyTeachersLackProfile/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeachersLackProfile/'.$id);
+   
+
+       echo $response;
+});
+
+
+Flight::route('GET /allMyTeachersInviteResponse/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeachersInviteResponse/'.$id);
+   
+
+       echo $response;
+});
+
+
+Flight::route('GET /allMyTeachersInviteNotResponse/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeachersInviteNotResponse/'.$id);
+   
+
+       echo $response;
+});
 Flight::route('GET /oneMyTeachers/@id/@teacher', function ($id,$teacher) {
     
     header("Access-Control-Allow-Origin: *");

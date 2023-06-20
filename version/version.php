@@ -11,8 +11,8 @@ function versioning() {
         "apiRepos"=>"0.1.0-alpha",
         "apiTools"=>"0.1.0-alpha",
         "apiUsers"=>"0.1.0-alpha",
-        "apiResources"=>"0.1.0-alpha",
-        "apiLugmacore"=>"0.1.0-alpha",
+        "apiResources"=>"0.1.1-alpha",
+        "apiLugmacore"=>"0.1.1-alpha",
     );
     return $dta;
 }
