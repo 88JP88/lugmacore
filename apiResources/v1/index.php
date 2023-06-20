@@ -185,6 +185,17 @@ Flight::route('GET /filterMyTeachers/@id/@teacher/@type', function ($id,$teacher
        echo $response;
 });
 
+Flight::route('GET /filterMyCoor/@id/@coor/@type', function ($id,$coor,$type) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiCoordinate/v1/filterMyCoor/'.$id."/".$coor."/".$type);
+    
+       echo $response;
+});
+
 Flight::route('GET /allMyTeachers/@id', function ($id) {
     
     header("Access-Control-Allow-Origin: *");
@@ -209,6 +220,18 @@ Flight::route('GET /allMyTeachersProfile/@id', function ($id) {
        echo $response;
 });
 
+Flight::route('GET /allMyCoorProfile/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiCoordinate/v1/allMyCoorProfile/'.$id);
+   
+
+       echo $response;
+});
+
 Flight::route('GET /allMyTeachersLackProfile/@id', function ($id) {
     
     header("Access-Control-Allow-Origin: *");
@@ -221,6 +244,17 @@ Flight::route('GET /allMyTeachersLackProfile/@id', function ($id) {
        echo $response;
 });
 
+Flight::route('GET /allMyCoorLackProfile/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiCoordinate/v1/allMyCoorLackProfile/'.$id);
+   
+
+       echo $response;
+});
 
 Flight::route('GET /allMyTeachersInviteResponse/@id', function ($id) {
     
@@ -235,6 +269,19 @@ Flight::route('GET /allMyTeachersInviteResponse/@id', function ($id) {
 });
 
 
+Flight::route('GET /allMyCoorInviteResponse/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiCoordinate/v1/allMyCoorInviteResponse/'.$id);
+   
+
+       echo $response;
+});
+
+
 Flight::route('GET /allMyTeachersInviteNotResponse/@id', function ($id) {
     
     header("Access-Control-Allow-Origin: *");
@@ -242,6 +289,19 @@ Flight::route('GET /allMyTeachersInviteNotResponse/@id', function ($id) {
     $sub_domain=$sub_domaincons->dom();
 
     $response= file_get_contents($sub_domain.'/lugmaresources/apiTeachers/v1/allMyTeachersInviteNotResponse/'.$id);
+   
+
+       echo $response;
+});
+
+
+Flight::route('GET /allMyCoorInviteNotResponse/@id', function ($id) {
+    
+    header("Access-Control-Allow-Origin: *");
+    $sub_domaincons= new model_dom;
+    $sub_domain=$sub_domaincons->dom();
+
+    $response= file_get_contents($sub_domain.'/lugmaresources/apiCoordinate/v1/allMyCoorInviteNotResponse/'.$id);
    
 
        echo $response;
