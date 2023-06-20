@@ -1,5 +1,7 @@
 # Changelog
 
+## [0.5.0-alpha] - 2023-06-19
+-  APIlugmaresources new endpoints
 ## [0.4.0-alpha] - 2023-06-12
 -  APIlugmacore new endpoints
 ## [0.3.1-alpha] - 2023-06-12

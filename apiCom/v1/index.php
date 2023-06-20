@@ -233,13 +233,13 @@ Flight::route('POST /delLoged', function () {
     curl_close($curl);
 echo $response1;
 });
-Flight::route('GET /getInboxMail/@id', function ($id) {
+Flight::route('GET /getInboxMail/@id/@id2', function ($id,$id2) {
     
     header("Access-Control-Allow-Origin: *");
     $sub_domaincons= new model_dom;
     $sub_domain=$sub_domaincons->dom();
 
-    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getInboxMail/'.$id);
+    $response= file_get_contents($sub_domain.'/lugmacom/apiMail/v1/getInboxMail/'.$id.'/'.$id2);
     //echo $response;
     /*$url = 'http://localhost/xvision/api/controller/gatewayuser/v1/getAllUsers.php?id=1';
     $ch = curl_init($url);
